@@ -121,8 +121,12 @@ export default function Counter() {
             //Check if percentage is less than 100, if so calculate it
             let newPercentage = objective.percentage;
             let newCount = objective.count;
-            if(parseInt(objective.percentage) > 0){
-              newPercentage = (((objective.count-1)*100)/objective.total)+'%';
+            //check if count is higher than 0
+            if(parseInt(objective.count) > 0){
+              //only updates percentage if the count is less than the objective total
+              if(parseInt(objective.count) <= objective.total){
+                newPercentage = (((objective.count-1)*100)/objective.total)+'%';  
+              }
               newCount = objective.count-1;
             }
             

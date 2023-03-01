@@ -4,7 +4,18 @@ export default function ProgressBar({percentage}) {
 
     return(
         <View style={styles.container}>
-            <View style={[styles.bar, {width: percentage}, parseInt(percentage)>=96 ? styles.barHundred : styles.barNormal]}>
+            <View style={[
+                styles.bar,
+                {width: percentage},
+                parseInt(percentage)>=96 ? styles.barHundred : styles.barNormal,
+                parseInt(percentage) <= 5 ? 
+                    parseInt(percentage) <= 3 ? 
+                        parseInt(percentage) <= 2 ?
+                            parseInt(percentage) == 1 ? styles.barOne : styles.barTwo
+                        : styles.barThree
+                    : styles.barFive
+                : null
+            ]}>
             </View>
             <Text style={styles.barText}>{parseInt(percentage)}%</Text>
         </View>
@@ -22,7 +33,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        elevation: 5,
+        shadowColor: 'grey'
     },
     bar: {
         height:'100%',
@@ -34,6 +47,18 @@ const styles = StyleSheet.create({
     },
     barHundred: {
         borderRadius: 15
+    },
+    barFive: {
+        height: '95%'
+    },  
+    barThree: {
+        height: '80%'
+    },
+    barTwo: {
+        height: '60%'
+    },
+    barOne: { 
+        height: '40%'
     },
     barText: {
         marginRight: 5,

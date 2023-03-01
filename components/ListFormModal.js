@@ -4,45 +4,65 @@ import { TextInput } from "react-native-gesture-handler";
 import Gap from "./Gap";
 import { AntDesign } from '@expo/vector-icons';
 import CustomButton from "./CustomButton";
-
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 export default function ListFormModal({isModalOpened, setIsModalOpened, modalHandler}) {
-    const [title, setTitle] = useState(0);
-    const [list, setList] = useState(0);
-
-    const sendHandler = () => {
-        modalHandler(title,list);
-        setIsModalOpened(false);
-    }
+    const initialValues = {
+        title: '',
+        list: '',
+      };
+      
+      const validationSchema = Yup.object().shape({
+        title: Yup.string().required('Please enter a title'),
+        list: Yup.string().required('Please enter a list'),
+      });
 
     return(
         <Modal animationType="slide" transparent={true} visible={isModalOpened}>
             <View style={styles.modalContainer}>
-                <View style={styles.modalContent}>
-                    <TouchableOpacity  style={styles.closeButton} onPress={() => {setIsModalOpened(false)}} >
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={(values) => {
+                    modalHandler(values.title, values.list);
+                    setIsModalOpened(false);
+                  }}
+                >
+                  {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+                    <View style={styles.modalContent}>
+                      <TouchableOpacity style={styles.closeButton} onPress={() => setIsModalOpened(false)}>
                         <AntDesign name="closecircleo" size={24} color="black" />
-                    </TouchableOpacity>
-                    <TextInput
+                      </TouchableOpacity>
+                      <TextInput
                         style={styles.textInput}
                         placeholder="title"
-                        onChangeText={(text) => setTitle(text)}
-                    />
-                    <Gap pixels={10}/>
-                    <TextInput
+                        onChangeText={handleChange('title')}
+                        onBlur={handleBlur('title')}
+                        value={values.title}
+                      />
+                      {touched.title && errors.title && <Text style={styles.error}>{errors.title}</Text>}
+                      <Gap pixels={10} />
+                      <TextInput
                         style={styles.textArea}
                         placeholder="list"
-                        onChangeText={(text) => setList(text)}
-                        multiline = {true}
-                        numberOfLines = {10} 
-                    />
-                    <Gap pixels={20}/>
-                    <CustomButton 
-                        buttonColor='#6ADA41'
-                        buttonTitle='add'
-                        onPress={sendHandler}
-                        iconName='plussquare'
-                    />
-                </View>
+                        onChangeText={handleChange('list')}
+                        onBlur={handleBlur('list')}
+                        value={values.list}
+                        multiline={true}
+                        numberOfLines={10}
+                      />
+                      {touched.list && errors.list && <Text style={styles.error}>{errors.list}</Text>}
+                      <Gap pixels={20} />
+                      <CustomButton
+                        buttonColor="#6ADA41"
+                        buttonTitle="add"
+                        onPress={handleSubmit}
+                        iconName="plussquare"
+                      />
+                    </View>
+                  )}
+                </Formik>
             </View>
         </Modal>
     );
@@ -88,5 +108,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 20,
         right: 30
+    },
+    error: {
+        fontFamily: 'Inter',
+        color: '#CDD4DA'
     }
 });

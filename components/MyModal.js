@@ -4,44 +4,73 @@ import { TextInput } from "react-native-gesture-handler";
 import Gap from "./Gap";
 import CustomButton from "./CustomButton";
 import { AntDesign } from '@expo/vector-icons';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 
 export default function MyModal({isModalOpened, setIsModalOpened, modalHandler}) {
-    const [title, setTitle] = useState(0);
-    const [total, setTotal] = useState(0);
+    const initialValues = {
+        title: '',
+        total: '',
+      };
+      
+      const validationSchema = Yup.object().shape({
+        title: Yup.string().required('Title is required'),
+        total: Yup.number()
+          .typeError('Objective total must be a number')
+          .required('Objective total is required'),
+      });
 
-    const sendHandler = () => {
-        modalHandler(title,total);
-        setIsModalOpened(false);
-    }
-
+      
     return(
         <Modal animationType="slide" transparent={true} visible={isModalOpened}>
             <View style={styles.modalContainer}>
-                <View style={styles.modalContent}>
-                    <TouchableOpacity  style={styles.closeButton} onPress={() => {setIsModalOpened(false)}} >
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={(values) => {
+                    modalHandler(values.title, values.total);
+                    setIsModalOpened(false);
+                  }}
+                >
+                  {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+                    <View style={styles.modalContent}>
+                      <TouchableOpacity style={styles.closeButton} onPress={() => setIsModalOpened(false)}>
                         <AntDesign name="closecircleo" size={24} color="black" />
-                    </TouchableOpacity>
-                    <TextInput
+                      </TouchableOpacity>
+                
+                      <TextInput
                         style={styles.textInput}
                         placeholder="title"
-                        onChangeText={(text) => setTitle(text)}
-                    />
-                    <Gap pixels={10}/>
-                    <TextInput
+                        onChangeText={handleChange('title')}
+                        onBlur={handleBlur('title')}
+                        value={values.title}
+                      />
+                      {touched.title && errors.title && <Text style={styles.error}>{errors.title}</Text>}
+                
+                      <Gap pixels={10} />
+                
+                      <TextInput
                         style={styles.textInput}
                         placeholder="objective total"
-                        onChangeText={(text) => setTotal(text)}
-                    />
-                    <Gap pixels={20}/>
-                    
-                    <CustomButton 
-                        buttonColor='#6ADA41'
-                        buttonTitle='add'
-                        onPress={sendHandler}
-                        iconName='plussquare'
-                    />
-                </View>
+                        onChangeText={handleChange('total')}
+                        onBlur={handleBlur('total')}
+                        value={values.total}
+                        keyboardType="numeric"
+                      />
+                      {touched.total && errors.total && <Text style={styles.error}>{errors.total}</Text>}
+                
+                      <Gap pixels={20} />
+                
+                      <CustomButton
+                        buttonColor="#6ADA41"
+                        buttonTitle="add"
+                        onPress={handleSubmit}
+                        iconName="plussquare"
+                      />
+                    </View>
+                  )}
+                </Formik> 
             </View>
         </Modal>
     );
@@ -77,5 +106,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 20,
         right: 30
+    },
+    error: {
+        fontFamily: 'Inter',
+        color: '#CDD4DA'
     }
 });

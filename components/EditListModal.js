@@ -4,44 +4,65 @@ import { ScrollView, TextInput } from "react-native-gesture-handler";
 import Gap from "./Gap";
 import { AntDesign } from '@expo/vector-icons';
 import CustomButton from "./CustomButton";
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 export default function EditListModal({isEditModalOpened, setIsEditModalOpened, listTitle, listList, editHandler}) {
-    const [title, setTitle] = useState(listTitle);
-    const [list, setList] = useState(listList);
-
-    const sendHandler = () => {
-        editHandler(title,list);
-        setIsEditModalOpened(false);
-    }
+    const initialValues = {
+        title: listTitle,
+        list: listList,
+      };
+      
+      const validationSchema = Yup.object().shape({
+        title: Yup.string().required("Title is required"),
+        list: Yup.string().required("List is required"),
+      });
 
     return(
         <Modal animationType="slide" transparent={true} visible={isEditModalOpened}>
             <View style={styles.modalContainer}>
-                <View style={styles.modalContent}>
-                    <TouchableOpacity  style={styles.closeButton} onPress={() => {setIsEditModalOpened(false)}} >
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={(values) => {
+                    editHandler(values.title,values.list);
+                    setIsEditModalOpened(false);
+                  }}
+                >
+                  {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+                    <View style={styles.modalContent}>
+                      <TouchableOpacity style={styles.closeButton} onPress={() => setIsEditModalOpened(false)}>
                         <AntDesign name="closecircleo" size={24} color="black" />
-                    </TouchableOpacity>
-                    <TextInput
+                      </TouchableOpacity>
+                      <TextInput
                         style={styles.textInput}
-                        value={title}
-                        onChangeText={(text) => setTitle(text)}
-                    />
-                    <Gap pixels={10}/>
-                    <TextInput
+                        placeholder="Title"
+                        onChangeText={handleChange("title")}
+                        onBlur={handleBlur("title")}
+                        value={values.title}
+                       />
+                      {touched.title && errors.title && <Text style={styles.error}>{errors.title}</Text>}
+                      <Gap pixels={10} />
+                      <TextInput
                         style={styles.textArea}
-                        value={list}
-                        onChangeText={(text) => setList(text)}
-                        multiline = {true}
-                        numberOfLines = {10} 
-                    />
-                    <Gap pixels={20}/>
-                    <CustomButton 
-                        buttonColor='#6ADA41'
-                        buttonTitle='edit'
-                        onPress={sendHandler}
-                        iconName='plussquare'
-                    />
-                </View>
+                        placeholder="List"
+                        onChangeText={handleChange("list")}
+                        onBlur={handleBlur("list")}
+                        value={values.list}
+                        multiline={true}
+                        numberOfLines={10}
+                       />
+                      {touched.list && errors.list && <Text style={styles.error}>{errors.list}</Text>}
+                      <Gap pixels={20} />
+                      <CustomButton
+                        buttonColor="#6ADA41"
+                        buttonTitle="add"
+                        onPress={handleSubmit}
+                        iconName="plussquare"
+                      />
+                    </View>
+                  )}
+                </Formik>
             </View>
         </Modal>
     );
@@ -88,5 +109,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 20,
         right: 30
+    },
+    error: {
+        fontFamily: 'Inter',
+        color: '#CDD4DA'
     }
 });
