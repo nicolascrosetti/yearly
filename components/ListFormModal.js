@@ -58,13 +58,13 @@ const styles = StyleSheet.create({
     modalContent: {
         width: 300,
         height: 400,
-        backgroundColor: '#F3F9FF',
+        backgroundColor: '#FCFEFF',
         borderWidth: 0.3,
         borderColor: '#CDD4DA',
-        borderRadius: 25,
+        borderRadius: 8,
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     textInput: {
         fontSize: 18,

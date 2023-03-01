@@ -4,12 +4,10 @@ import GapRow from './GapRow';
 
 export default function CustomButton({ buttonTitle, onPress, buttonColor, iconName }){
     return(
-        <TouchableOpacity onPress={onPress}>
-            <View style={[styles.button, {backgroundColor:buttonColor}]}>
-                <Text style={styles.buttonText}>{buttonTitle}</Text>
-                <GapRow pixels='5' />
-                <AntDesign name={iconName} size={20} color="white" />
-            </View>
+        <TouchableOpacity style={[styles.button, {backgroundColor:buttonColor}]} onPress={onPress}>
+            <Text style={styles.buttonText}>{buttonTitle}</Text>
+            <GapRow pixels='5' />
+            <AntDesign name={iconName} size={20} color="white" />
         </TouchableOpacity>
     );
 }
@@ -21,6 +19,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 5,
         padding: 10,
+        elevation: 2,
+        shadowColor: 'black'
     },
     buttonText: {
         color: 'white',

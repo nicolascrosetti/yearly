@@ -9,6 +9,7 @@ import Gap from '../components/Gap';
 import List from '../components/List';
 import CustomButton from '../components/CustomButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import GreyBackdrop from '../components/GreyBackdrop';
 
 export default function Lists() {
     //Load fonts
@@ -162,6 +163,7 @@ export default function Lists() {
              />
             <Gap  pixels='20' />
             <ListFormModal isModalOpened={isModalOpened} setIsModalOpened={setIsModalOpened} modalHandler={modalHandler} />
+            { isModalOpened ?  <GreyBackdrop></GreyBackdrop> : null}
         </View>
     );
 }
@@ -181,9 +183,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
         backgroundColor: '#DEE7FF',
-        borderBottomWidth: 0.3,
+        borderWidth: 0.15,
+        borderColor: '#CDD4DA',
         paddingLeft: 80,
-        paddingRight: 80
+        paddingRight: 80,
+        marginBottom: 5,
+        elevation: 5,
+        shadowColor: '#CDD4DA',
     },
     textSm: {
         fontSize: 20,

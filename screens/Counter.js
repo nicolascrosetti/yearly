@@ -11,6 +11,7 @@ import uuid from 'react-uuid';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import CustomButton from '../components/CustomButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import GreyBackdrop from '../components/GreyBackdrop';
 
 export default function Counter() {
     //Load fonts
@@ -137,6 +138,11 @@ export default function Counter() {
       setObjectives(updatedList); // set state to new object with updated list
     }
 
+    const deleteObjectiveHandler = (currentObjectiveKey) => {
+      //create a new list of list without the current list with filter() and SetLists to that new list
+      setObjectives(objectives => objectives.filter((element) => element.key !== currentObjectiveKey));
+    }
+
 
 
     const modalHandler = (title,total) => {
@@ -178,6 +184,11 @@ export default function Counter() {
                         </View>
                         <Gap pixels='10'/>
                         <ProgressBar  percentage={objective.percentage}/>
+                        <View style={styles.deleteButton}>
+                          <TouchableOpacity onPress={() => {deleteObjectiveHandler(objective.key)}}>
+                            <AntDesign name='delete' size={18} color="white" />
+                          </TouchableOpacity>
+                        </View>
                     </View>
                 );
             })}
@@ -194,6 +205,7 @@ export default function Counter() {
              
              <Gap pixels='20'/>
              <MyModal isModalOpened={isModalOpened} setIsModalOpened={setIsModalOpened} modalHandler={modalHandler} />
+             { isModalOpened ?  <GreyBackdrop></GreyBackdrop> : null}
         </View>
     );
 }
@@ -207,7 +219,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        paddingTop: 20
+        paddingTop: 20,
       },
       objectiveItem: {
         display: 'flex',
@@ -217,7 +229,9 @@ const styles = StyleSheet.create({
         borderColor: '#CDD4DA',
         backgroundColor: '#DEE7FF',
         borderRadius: 20,
-        marginBottom: 20
+        marginBottom: 20,
+        elevation: 10,
+        shadowColor: '#CDD4DA',
       },
       row: {
         display: 'flex',
@@ -226,6 +240,16 @@ const styles = StyleSheet.create({
       textSm: {
         fontSize: 20,
         fontFamily: 'Inter-Medium'
+      },
+      deleteButton: {
+        backgroundColor: '#DA416A',
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        padding: 3,
+        borderRadius: 5,
+        elevation: 2,
+        shadowColor: 'black'
       }
 
 });

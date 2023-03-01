@@ -5,6 +5,7 @@ import { useState } from 'react';
 import EditListModal from './EditListModal';
 import { ScrollView } from 'react-native-gesture-handler';
 import CustomButton from './CustomButton';
+import GreyBackdrop from './GreyBackdrop';
 
 export default function List({isListOpened, setIsListOpened, listTitle, listList, deleteListHandler,editHandler}) {
     const [isEditModalOpened, setIsEditModalOpened] = useState(false);
@@ -47,6 +48,7 @@ export default function List({isListOpened, setIsListOpened, listTitle, listList
             </View>
 
             <EditListModal isEditModalOpened={isEditModalOpened} setIsEditModalOpened={setIsEditModalOpened} editHandler={editHandler} listTitle={listTitle} listList={listList}/>
+            { isEditModalOpened ?  <GreyBackdrop></GreyBackdrop> : null}
         </Modal>
     );
 }
@@ -79,6 +81,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 20,
         height: 400,
-        width: 250
+        width: 250,
+        elevation: 8,
+        shadowColor: '#CDD4DA'
     }
 });
