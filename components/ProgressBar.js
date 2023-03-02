@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         borderRadius: 15
     },
     barFive: {
-        height: '95%'
+        height: '90%'
     },  
     barThree: {
         height: '80%'
