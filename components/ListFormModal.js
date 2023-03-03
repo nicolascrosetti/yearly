@@ -111,6 +111,6 @@ const styles = StyleSheet.create({
     },
     error: {
         fontFamily: 'Inter',
-        color: '#CDD4DA'
+        color: '#DA416A'
     }
 });

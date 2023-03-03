@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View, Button, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, Button, ScrollView, Alert } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import MyModal from '../components/MyModal';
+import ObjectiveFormModal from '../components/ObjectiveFormModal';
 import Gap from '../components/Gap';
 import GapRow from '../components/GapRow';
 import ProgressBar from '../components/ProgressBar';
@@ -142,6 +142,27 @@ export default function Counter() {
       setObjectives(updatedList); // set state to new object with updated list
     }
 
+    const confirmDeletionHadler = (currentObjectiveKey) => {
+      return Alert.alert(
+          "Delete",
+          "Are you sure you want to remove this objetive counter?",
+          [
+            // The "Yes" button
+            {
+              text: "Yes",
+              onPress: () => {
+                deleteObjectiveHandler(currentObjectiveKey);
+              },
+            },
+            // The "No" button
+            // Does nothing but dismiss the dialog when tapped
+            {
+              text: "No",
+            },
+          ]
+        );
+    }
+
     const deleteObjectiveHandler = (currentObjectiveKey) => {
       //create a new list of list without the current list with filter() and SetLists to that new list
       setObjectives(objectives => objectives.filter((element) => element.key !== currentObjectiveKey));
@@ -189,7 +210,7 @@ export default function Counter() {
                         <Gap pixels='10'/>
                         <ProgressBar  percentage={objective.percentage}/>
                         <View style={styles.deleteButton}>
-                          <TouchableOpacity onPress={() => {deleteObjectiveHandler(objective.key)}}>
+                          <TouchableOpacity onPress={() => {confirmDeletionHadler(objective.key)}}>
                             <AntDesign name='delete' size={18} color="white" />
                           </TouchableOpacity>
                         </View>
@@ -208,7 +229,7 @@ export default function Counter() {
              />
              
              <Gap pixels='20'/>
-             <MyModal isModalOpened={isModalOpened} setIsModalOpened={setIsModalOpened} modalHandler={modalHandler} />
+             <ObjectiveFormModal isModalOpened={isModalOpened} setIsModalOpened={setIsModalOpened} modalHandler={modalHandler} />
              { isModalOpened ?  <GreyBackdrop></GreyBackdrop> : null}
         </View>
     );

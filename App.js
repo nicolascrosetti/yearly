@@ -11,6 +11,7 @@ import * as SplashScreen from 'expo-splash-screen';
 const Drawer = createDrawerNavigator();
 
 const MyTheme = {
+  
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,

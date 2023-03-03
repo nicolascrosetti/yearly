@@ -8,7 +8,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 
-export default function MyModal({isModalOpened, setIsModalOpened, modalHandler}) {
+export default function ObjectiveFormModal({isModalOpened, setIsModalOpened, modalHandler}) {
     const initialValues = {
         title: '',
         total: '',
@@ -109,6 +109,6 @@ const styles = StyleSheet.create({
     },
     error: {
         fontFamily: 'Inter',
-        color: '#CDD4DA'
+        color: '#DA416A'
     }
 });

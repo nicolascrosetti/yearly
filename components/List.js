@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Modal, Button } from 'react-native';
+import { StyleSheet, Text, View, Modal, Button, Alert } from 'react-native';
 import Gap from './Gap';
 import GapRow from './GapRow';
 import { useState } from 'react';
@@ -9,6 +9,27 @@ import GreyBackdrop from './GreyBackdrop';
 
 export default function List({isListOpened, setIsListOpened, listTitle, listList, deleteListHandler,editHandler}) {
     const [isEditModalOpened, setIsEditModalOpened] = useState(false);
+
+    const confirmDeletionHadler = () => {
+        return Alert.alert(
+            "Delete",
+            "Are you sure you want to remove this list?",
+            [
+              // The "Yes" button
+              {
+                text: "Yes",
+                onPress: () => {
+                  deleteListHandler();
+                },
+              },
+              // The "No" button
+              // Does nothing but dismiss the dialog when tapped
+              {
+                text: "No",
+              },
+            ]
+          );
+    }
     
     return(
         <Modal transparent={true} visible={isListOpened}>
@@ -33,7 +54,7 @@ export default function List({isListOpened, setIsListOpened, listTitle, listList
                     <CustomButton 
                         buttonColor='#DA416A'
                         buttonTitle='delete'
-                        onPress={() => deleteListHandler()}
+                        onPress={() => confirmDeletionHadler()}
                         iconName='delete'
                     />
                 </View>
