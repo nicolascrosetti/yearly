@@ -2,7 +2,8 @@ import 'react-native-gesture-handler';
 import Year from "./screens/Year";
 import Counter from './screens/Counter';
 import Lists from './screens/Lists';
-import { NavigationContainer,DefaultTheme} from "@react-navigation/native";
+import { useColorScheme } from 'react-native';
+import { NavigationContainer,DefaultTheme, DarkTheme} from "@react-navigation/native";
 import { createDrawerNavigator} from '@react-navigation/drawer';
 import { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
@@ -11,16 +12,29 @@ import * as SplashScreen from 'expo-splash-screen';
 const Drawer = createDrawerNavigator();
 
 const MyTheme = {
-  
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
     primary: '#7891DA',
-    card: '#FEFEFF'
+    card: '#FCFEFF',
+    background: '#F0F8FF'
   },
 };
 
+const MyDarkTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    primary: '#7891DA',
+    card: '#444648',
+    background: '#222324',
+    border: '#666A6D'
+  },
+};
+
+
 export default function App() {
+  const scheme = useColorScheme();
   //Load fonts
   const [fontsLoaded] = useFonts({
     'Inter': require('./assets/fonts/Inter-ExtraLight.ttf'),
@@ -49,7 +63,7 @@ export default function App() {
   } 
 
   return (
-    <NavigationContainer theme={MyTheme}>
+    <NavigationContainer theme={scheme === 'dark' ? MyDarkTheme : MyTheme}>
       <Drawer.Navigator>
         <Drawer.Screen 
         name="Year Progress"

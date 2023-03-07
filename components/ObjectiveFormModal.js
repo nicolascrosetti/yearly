@@ -6,9 +6,12 @@ import CustomButton from "./CustomButton";
 import { AntDesign } from '@expo/vector-icons';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useTheme } from "@react-navigation/native";
 
 
 export default function ObjectiveFormModal({isModalOpened, setIsModalOpened, modalHandler}) {
+    const { colors } = useTheme();
+
     const initialValues = {
         title: '',
         total: '',
@@ -34,13 +37,13 @@ export default function ObjectiveFormModal({isModalOpened, setIsModalOpened, mod
                   }}
                 >
                   {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-                    <View style={styles.modalContent}>
+                    <View style={[styles.modalContent, {backgroundColor: colors.card, borderColor: colors.border}]}>
                       <TouchableOpacity style={styles.closeButton} onPress={() => setIsModalOpened(false)}>
                         <AntDesign name="closecircleo" size={24} color="black" />
                       </TouchableOpacity>
                 
                       <TextInput
-                        style={styles.textInput}
+                        style={[styles.textInput, {color: colors.text, borderColor: colors.border}]}
                         placeholder="title"
                         onChangeText={handleChange('title')}
                         onBlur={handleBlur('title')}
@@ -51,7 +54,7 @@ export default function ObjectiveFormModal({isModalOpened, setIsModalOpened, mod
                       <Gap pixels={10} />
                 
                       <TextInput
-                        style={styles.textInput}
+                        style={[styles.textInput, {color: colors.text, borderColor: colors.border}]}
                         placeholder="objective total"
                         onChangeText={handleChange('total')}
                         onBlur={handleBlur('total')}

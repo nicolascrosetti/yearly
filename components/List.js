@@ -6,8 +6,11 @@ import EditListModal from './EditListModal';
 import { ScrollView } from 'react-native-gesture-handler';
 import CustomButton from './CustomButton';
 import GreyBackdrop from './GreyBackdrop';
+import { useTheme } from '@react-navigation/native';
 
 export default function List({isListOpened, setIsListOpened, listTitle, listList, deleteListHandler,editHandler}) {
+    const {colors} = useTheme(); 
+
     const [isEditModalOpened, setIsEditModalOpened] = useState(false);
 
     const confirmDeletionHadler = () => {
@@ -33,12 +36,12 @@ export default function List({isListOpened, setIsListOpened, listTitle, listList
     
     return(
         <Modal transparent={true} visible={isListOpened}>
-            <View style={styles.modalContainer}>
-                <Text style={styles.textMd}>{listTitle}</Text>
+            <View style={[styles.modalContainer, {backgroundColor: colors.background}]}>
+                <Text style={[styles.textMd, {color: colors.text}]}>{listTitle}</Text>
                 <Gap pixels='50' />
-                    <View style={styles.list}>
+                    <View style={[styles.list, {backgroundColor: colors.card, borderColor: colors. border}]}>
                             <ScrollView>
-                                <Text style={styles.textSm}>{listList}</Text>
+                                <Text style={[styles.textSm, {color: colors.text}]}>{listList}</Text>
                             </ScrollView>
                     </View>
                 

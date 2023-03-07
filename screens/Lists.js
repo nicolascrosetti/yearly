@@ -5,6 +5,7 @@ import uuid from 'react-uuid';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { useTheme } from '@react-navigation/native';
 import Gap from '../components/Gap';
 import List from '../components/List';
 import CustomButton from '../components/CustomButton';
@@ -12,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import GreyBackdrop from '../components/GreyBackdrop';
 
 export default function Lists() {
+  const { colors } = useTheme();
     //Load fonts
     const [fontsLoaded] = useFonts({
         'Inter': require('../assets/fonts/Inter-ExtraLight.ttf'),
@@ -133,7 +135,7 @@ export default function Lists() {
 
     //Render
     return(
-        <View style={styles.container}>
+        <View style={[styles.container, {backgroundColor: colors.background}]}>
             <ScrollView>
                 {lists.map(list => {
                     return(
@@ -185,11 +187,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#DEE7FF',
         borderWidth: 0.15,
         borderColor: '#CDD4DA',
-        paddingLeft: 80,
-        paddingRight: 80,
         marginBottom: 5,
         elevation: 5,
         shadowColor: '#CDD4DA',
+        minWidth: '100%',
     },
     textSm: {
         fontSize: 20,

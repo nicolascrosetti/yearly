@@ -6,8 +6,11 @@ import { AntDesign } from '@expo/vector-icons';
 import CustomButton from "./CustomButton";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useTheme } from "@react-navigation/native";
 
 export default function EditListModal({isEditModalOpened, setIsEditModalOpened, listTitle, listList, editHandler}) {
+    const { colors } = useTheme();
+
     const initialValues = {
         title: listTitle,
         list: listList,
@@ -30,12 +33,12 @@ export default function EditListModal({isEditModalOpened, setIsEditModalOpened, 
                   }}
                 >
                   {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-                    <View style={styles.modalContent}>
+                    <View style={[styles.modalContent, {backgroundColor: colors.card, borderColor: colors.border}]}>
                       <TouchableOpacity style={styles.closeButton} onPress={() => setIsEditModalOpened(false)}>
                         <AntDesign name="closecircleo" size={24} color="black" />
                       </TouchableOpacity>
                       <TextInput
-                        style={styles.textInput}
+                        style={[styles.textInput, {color: colors.text, borderColor: colors.border}]}
                         placeholder="Title"
                         onChangeText={handleChange("title")}
                         onBlur={handleBlur("title")}
@@ -44,7 +47,7 @@ export default function EditListModal({isEditModalOpened, setIsEditModalOpened, 
                       {touched.title && errors.title && <Text style={styles.error}>{errors.title}</Text>}
                       <Gap pixels={10} />
                       <TextInput
-                        style={styles.textArea}
+                        style={[styles.textArea, {color: colors.text, borderColor: colors.border}]}
                         placeholder="List"
                         onChangeText={handleChange("list")}
                         onBlur={handleBlur("list")}

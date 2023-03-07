@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { differenceInDays, differenceInCalendarWeeks, differenceInCalendarMonths } from 'date-fns';
 import { useFonts } from 'expo-font';
+import { useTheme } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import ProgressBar from '../components/ProgressBar';
 import Gap from '../components/Gap';
@@ -9,6 +10,7 @@ import Gap from '../components/Gap';
 
 
 export default function Year() {
+  const { colors } = useTheme();
   //Load fonts
   const [fontsLoaded] = useFonts({
     'Inter': require('../assets/fonts/Inter-ExtraLight.ttf'),
@@ -67,23 +69,23 @@ export default function Year() {
 
   //Render
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: colors.background}]}>
       {/* Progress Text */}   
-      <Text style={styles.text}>
+      <Text style={[styles.text, {color: colors.text}]}>
         Day 
         <Text style={styles.green}> {dayNumber} </Text> 
         of 
         <Text style={styles.red}> 365 </Text> 
       </Text>
       <Gap pixels={pixelsGap}></Gap>
-      <Text style={styles.text}>
+      <Text style={[styles.text, {color: colors.text}]}>
         Week
         <Text style={styles.green}> {weekNumber} </Text> 
         of 
         <Text style={styles.red}> 52 </Text> 
       </Text>
       <Gap pixels={pixelsGap}></Gap>
-      <Text style={styles.text}>
+      <Text style={[styles.text, {color: colors.text}]}>
         Month
         <Text style={styles.green}> {monthNumber} </Text> 
         of 
@@ -93,7 +95,7 @@ export default function Year() {
       {/* Progress Bar */}
       <View style={styles.barContainer}>
         <ProgressBar percentage={yearPercentage}/>
-        <Text style={styles.textSm}>Year Progress</Text>
+        <Text style={[styles.textSm, {color: colors.text}]}>Year Progress</Text>
       </View>
     </View>
   );

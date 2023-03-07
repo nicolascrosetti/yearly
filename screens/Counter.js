@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Button, ScrollView, Alert } from 'react-native'
 import { useState, useEffect } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { useTheme } from '@react-navigation/native';
 import ObjectiveFormModal from '../components/ObjectiveFormModal';
 import Gap from '../components/Gap';
 import GapRow from '../components/GapRow';
@@ -14,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import GreyBackdrop from '../components/GreyBackdrop';
 
 export default function Counter() {
+    const { colors } = useTheme();
     //Load fonts
     const [fontsLoaded] = useFonts({
       'Inter': require('../assets/fonts/Inter-ExtraLight.ttf'),
@@ -191,7 +193,7 @@ export default function Counter() {
 
     //Render
     return(
-        <View style={styles.container}>
+        <View style={[styles.container, {backgroundColor: colors.background}]}>
             <ScrollView>
             {objectives.map(objective => {
                 return(
