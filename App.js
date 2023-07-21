@@ -17,7 +17,9 @@ const MyTheme = {
     ...DefaultTheme.colors,
     primary: '#7891DA',
     card: '#FCFEFF',
-    background: '#F0F8FF'
+    text: 'black',
+    background: '#F0F8FF',
+    notification: '#DEE7FF',
   },
 };
 
@@ -27,8 +29,10 @@ const MyDarkTheme = {
     ...DarkTheme.colors,
     primary: '#7891DA',
     card: '#444648',
+    text: 'white',
     background: '#222324',
-    border: '#666A6D'
+    border: '#666A6D',
+    notification: '#444648',
   },
 };
 
@@ -60,37 +64,37 @@ export default function App() {
     return undefined;
   } else {
     SplashScreen.hideAsync();
-  } 
+  }
 
   return (
-    <NavigationContainer theme={scheme === 'dark' ? MyDarkTheme : MyTheme}>
-      <Drawer.Navigator>
+    <NavigationContainer theme={scheme === 'dark' ? MyDarkTheme : MyTheme} >
+      <Drawer.Navigator initialRouteName="Year Progress">
         <Drawer.Screen 
-        name="Year Progress"
-        component={Year}
-        options={{
-          headerTitleStyle: {
-            fontFamily: 'Inter-Regular',
-          }
-        }}
+          name="Year Progress"
+          component={Year}
+          options={{
+            headerTitleStyle: {
+              fontFamily: 'Inter-Regular',
+            }
+          }}
         />
         <Drawer.Screen 
-        name="Objectives Counter"
-        component={Counter}
-        options={{
-          headerTitleStyle: {
-            fontFamily: 'Inter-Regular',
-          }
-        }}
+          name="Objectives Counter"
+          component={Counter}
+          options={{
+            headerTitleStyle: {
+              fontFamily: 'Inter-Regular',
+            }
+          }}
         />
         <Drawer.Screen 
-        name="Lists"
-        component={Lists}
-        options={{
-          headerTitleStyle: {
-            fontFamily: 'Inter-Regular',
-          }
-        }}
+          name="Lists"
+          component={Lists}
+          options={{
+            headerTitleStyle: {
+              fontFamily: 'Inter-Regular',
+            }
+          }}
         />
       </Drawer.Navigator>
     </NavigationContainer>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Image, ActivityIndicator} from 'react-native';
 import { differenceInDays, differenceInCalendarWeeks, differenceInCalendarMonths} from 'date-fns';
 import { useFonts } from 'expo-font';
 import { useTheme } from '@react-navigation/native';
@@ -7,19 +7,17 @@ import * as SplashScreen from 'expo-splash-screen';
 import ProgressBar from '../components/ProgressBar';
 import Gap from '../components/Gap';
 import * as Location from 'expo-location';
-import Snowflake from '../components/Seasons/Snowflake';
 import Snowfall from '../components/Seasons/Snowfall';
-import Leaf from '../components/Seasons/Leaf';
 import LeafFall from '../components/Seasons/LeafFall';
 import Summer from '../components/Seasons/Summer';
 import Spring from '../components/Seasons/Spring';
-
-
+import { Asset } from 'expo-asset';
+import { StatusBar } from 'expo-status-bar';
 
 export default function Year() {
   const { colors } = useTheme();
   //Load fonts
-  const [fontsLoaded] = useFonts({
+  /* const [fontsLoaded] = useFonts({
     'Inter': require('../assets/fonts/Inter-ExtraLight.ttf'),
     'Inter': require('../assets/fonts/Inter-Light.ttf'),
     'Inter-Regular': require('../assets/fonts/Inter-Regular.ttf'),
@@ -27,19 +25,33 @@ export default function Year() {
     'Inter-SemiBold': require('../assets/fonts/Inter-SemiBold.ttf'),
     'Inter-Bold': require('../assets/fonts/Inter-Bold.ttf'),
     'Inter-Thin': require('../assets/fonts/Inter-Thin.ttf')
-  });
-
-  //Images
-  const winterImage = require('../assets/images/winter.png');
-  const autumnImage = require('../assets/images/autumn.png');
-  const summerImage = require('../assets/images/summer.png');
-  const springImage = require('../assets/images/spring.png');
+  }); */
 
   // useState
   const [today, setToday] = useState(new Date());
   const [yearPercentage, setYearPercentage] = useState(0);
   const [userHemisphere, setUserHemisphere] = useState(0);
   const [userSeason, setUserSeason] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [userSeasonImage, setUserSeasonImage] = useState(0);
+  const [hideCustomSplashScreen, setHideCustomSplashScreen] = useState(false);
+
+  // Images
+  let cacheResources = async () => {
+    const images = [
+      require('../assets/images/winter.png'),
+      require('../assets/images/autumn.png'),
+      require('../assets/images/summer.png'),
+      require('../assets/images/spring.png'),
+      require('../assets/images/splash.png')
+    ];
+
+    const cacheImages = images.map(image => {
+      return Asset.fromModule(image).downloadAsync()
+    });
+
+    return Promise.all(cacheImages);
+  }
 
   // useEffect
   useEffect(() => {
@@ -49,8 +61,15 @@ export default function Year() {
       setUserHemisphere(hemisphere);
     })
     .catch(error => {
-      console.log('Error getting user hemisphere:', error);
+      setUserHemisphere('none');
     });
+
+    //Load Images
+    const loadResources = async () => {
+      await cacheResources();
+      setIsLoaded(true);
+    }
+    loadResources();
 
     //Set today's date
     setToday(new Date());
@@ -59,50 +78,69 @@ export default function Year() {
     const percetange = ((dayNumber * 100) / 365)+ '%';
     setYearPercentage(percetange);
 
-    //Prevent splash screen auto hiding to load fonts
-    async function prepare(){
-      await SplashScreen.preventAutoHideAsync();
-    }
-    prepare();
+    setTimeout(() => {
+      setHideCustomSplashScreen(true);
+    }, 2000);
   }, []);
 
-  useEffect(() => {
-    //get users season
-    if (userHemisphere == 'southern') {
-      if (monthNumber == 12 || monthNumber == 1 || monthNumber == 2) {
-        setUserSeason('summer');
-      } else if (monthNumber == 3) {
-        if (dayNumber >= 1 && dayNumber < 21) {
-          setUserSeason('autumn');
-        } else {
-          setUserSeason('summer');
-        }
-      } else if (monthNumber == 4 || monthNumber == 5) {
-        setUserSeason('autumn');
-      } else if (monthNumber == 6 || monthNumber == 7 || monthNumber == 8) {
-        setUserSeason('winter');
-      } else {
-        setUserSeason('spring');
-      }
-    } else if (userHemisphere == 'northern') {
-      if (monthNumber == 12 || monthNumber == 1 || monthNumber == 2) {
-        setUserSeason('winter');
-      } else if (monthNumber == 3) {
-        if (dayNumber >= 1 && dayNumber < 20) {
-          setUserSeason('winter');
-        } else {
-          setUserSeason('spring');
-        }
-      } else if (monthNumber == 4 || monthNumber == 5) {
-        setUserSeason('spring');
-      } else if (monthNumber == 6 || monthNumber == 7 || monthNumber == 8) {
-        setUserSeason('summer');
-      } else {
-        setUserSeason('autumn');
-      }
+  //define seasons
+  const seasons = {
+    southern: {
+      1: 'summer',
+      2: 'summer',
+      3: (dayOfTheMonth) => dayOfTheMonth < 21 ? 'summer' : 'autumn',
+      4: 'autumn',
+      5: 'autumn',
+      6: (dayOfTheMonth) => dayOfTheMonth < 21 ? 'autumn' : 'winter',
+      7: 'winter',
+      8: 'winter',
+      9: (dayOfTheMonth) => dayOfTheMonth < 21 ? 'winter' : 'spring',
+      10: 'spring',
+      11: 'spring',
+      12: (dayOfTheMonth) => dayOfTheMonth < 21 ? 'spring' : 'summer',
+    },
+    northern: {
+      1: 'winter',
+      2: 'winter',
+      3: (dayOfTheMonth) => dayOfTheMonth < 21 ? 'winter' : 'spring',
+      4: 'spring',
+      5: 'spring',
+      6: (dayOfTheMonth) => dayOfTheMonth < 21 ? 'spring' : 'summer',
+      7: 'summer',
+      8: 'summer',
+      9: (dayOfTheMonth) => dayOfTheMonth < 21 ? 'summer' : 'autumn',
+      10: 'autumn',
+      11: 'autumn',
+      12: (dayOfTheMonth) => dayOfTheMonth < 21 ? 'autumn' : 'winter',
+    },
+  };
+  
+  //get user season
+  function getUserSeason(userHemisphere, monthNumber, dayOfTheMonth) {
+    const season = seasons[userHemisphere][monthNumber];
+    if (typeof season === 'function') {
+      return season(dayOfTheMonth);
     }
-    
+
+    return season;
+  }
+  // Call getUserSeason when userHemisphre updates
+  useEffect(() => {
+    const dayOfTheMonth = today.getDate();
+    if(userHemisphere == 'northern' || userHemisphere == 'southern'){
+      setUserSeason(getUserSeason(userHemisphere, monthNumber, dayOfTheMonth));
+    }
   }, [userHemisphere]);
+
+  //Set correct background image according to season
+  useEffect(() => {
+    userSeason == 'winter' ? setUserSeasonImage(require('../assets/images/winter.png'))
+    : userSeason == 'autumn' ? setUserSeasonImage(require('../assets/images/autumn.png'))
+    : userSeason == 'summer' ? setUserSeasonImage(require('../assets/images/summer.png'))
+    : userSeason == 'spring' ? setUserSeasonImage(require('../assets/images/spring.png')) : null;
+
+  }, [userSeason]);
+  
  
   //Variables and Functions
   //get users hemisphere
@@ -136,30 +174,21 @@ export default function Year() {
     today,
     new Date(2023, 0, 0)
   )
-
   const pixelsGap = '30';
-
-  //Check if Fonts Loaded
-  if (!fontsLoaded){
-    return undefined;
-  } else {
-    SplashScreen.hideAsync();
-  } 
 
   //Render
   return (
-    
+   <View>
+   { hideCustomSplashScreen ?
     <ImageBackground 
       source={
-        userSeason == 'winter' ? winterImage 
-        : userSeason == 'autumn' ? autumnImage 
-          : userSeason == 'summer' ? summerImage 
-            : userSeason == 'spring' ? springImage : null
+        userSeasonImage
       }
       style={styles.background} 
       opacity={0.4} 
       resizeMode='stretch'
     >
+      <StatusBar backgroundColor={colors.card} />
       <View style={styles.container} opacity={1}>
         {/* Progress Text */}   
         <Text style={[styles.text, {color: colors.text}]}>
@@ -204,9 +233,16 @@ export default function Year() {
             : userSeason == 'spring' ?
               <Spring /> : null
       }
-
-    </ImageBackground> 
-  
+    </ImageBackground>
+    : 
+    //<ImageBackground source={require('../assets/images/splash.png')} style={styles.background} ></ImageBackground>
+    <View style={styles.containerCenter}>
+      <Text style={[styles.textLg, {color: colors.primary}]}>Yearly</Text>
+      <Gap pixels='50'></Gap>
+      <ActivityIndicator size="large" color="#7891DA" style={{ transform: [{ scaleX: 2 }, { scaleY: 2 }] }} />
+    </View>
+     }
+    </View>
     
   );
 }
@@ -221,6 +257,16 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       paddingTop: 150
     },
+    containerCenter: {
+      flex: 1,
+      minHeight: '100%',
+      minWidth: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      paddingTop: 250
+    },
     greyOverlay: {
       flex: 1,
       backgroundColor: 'aliceblue'
@@ -232,11 +278,14 @@ const styles = StyleSheet.create({
     text: {
       fontSize: 30,
       fontFamily: 'Inter'
-      
     },
     textSm: {
       fontSize: 20,
       fontFamily: 'Inter-Thin',
+    },
+    textLg: {
+      fontSize: 50,
+      fontFamily: 'Inter'
     },
     green: {
       color: '#6ADA41'

@@ -1,15 +1,16 @@
 {
   "expo": {
-    "name": "yearapp",
-    "slug": "yearapp",
+    "name": "Yearly",
+    "slug": "Yearly",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
+    "backgroundColor": "#7891DA",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/images/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#7891DA"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,18 +24,21 @@
     "android": {
       "userInterfaceStyle": "automatic",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.nccrx.yearapp",
-      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
+      "package": "com.nccrx.yearly",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/images/icon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "5cf0f6f2-8e12-45ce-a304-c90b840d3bb2"
+        "projectId": "3a36e605-4f82-4e38-a33b-31dd8cbe187c"
       }
     }
   }

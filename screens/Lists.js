@@ -11,6 +11,7 @@ import List from '../components/List';
 import CustomButton from '../components/CustomButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GreyBackdrop from '../components/GreyBackdrop';
+import { StatusBar } from 'expo-status-bar';
 
 export default function Lists() {
   const { colors } = useTheme();
@@ -28,18 +29,7 @@ export default function Lists() {
     const [isModalOpened, setIsModalOpened] = useState(false);
     const [isListOpened, setIsListOpened] = useState(false);
     const [currentList, setCurrentList] = useState(0);
-    const [lists, setLists] = useState([
-        {
-            title: 'Albums of 2023',
-            list: 'First Album\nSecond Album\nThird Album',
-            key: uuid()
-        },
-        {
-            title: 'Albums (not 2023)',
-            list: 'Ants From Up There\nHellfire\nCaveworld',
-            key: uuid()
-        }
-    ]);
+    const [lists, setLists] = useState([]);
 
     //Async storage functions
     const storeData = async (value) => {
@@ -136,12 +126,14 @@ export default function Lists() {
     //Render
     return(
         <View style={[styles.container, {backgroundColor: colors.background}]}>
+            <StatusBar backgroundColor={colors.card} />
+            <Gap  pixels={5}/>
             <ScrollView>
                 {lists.map(list => {
                     return(
                         <TouchableOpacity key={list.key} onPress={() => listPressHandler(list)}>
-                            <View  style={styles.listItem}>
-                                <Text style={styles.textSm} >{list.title}</Text>
+                            <View  style={[styles.listItem, {backgroundColor: colors.notification, borderColor: colors.border, shadowColor: colors.color}]}>
+                                <Text style={[styles.textSm, {color: colors.text}]} >{list.title}</Text>
                             </View>
                         </TouchableOpacity>
                     );
@@ -184,12 +176,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         padding: 20,
-        backgroundColor: '#DEE7FF',
         borderWidth: 0.15,
-        borderColor: '#CDD4DA',
         marginBottom: 5,
         elevation: 5,
-        shadowColor: '#CDD4DA',
         minWidth: '100%',
     },
     textSm: {

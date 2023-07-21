@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, ScrollView, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, ScrollView, Alert, ImageBackground } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -13,6 +13,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import CustomButton from '../components/CustomButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GreyBackdrop from '../components/GreyBackdrop';
+import { StatusBar } from 'expo-status-bar';
 
 export default function Counter() {
     const { colors } = useTheme();
@@ -28,22 +29,7 @@ export default function Counter() {
 
      // useState
     const [isModalOpened, setIsModalOpened] = useState(false);
-    const [objectives, setObjectives] = useState([
-        {
-            title: 'Movies',
-            count: 25,
-            total: 50,
-            percentage: '50%',
-            key: uuid()
-        },
-        {
-            title: 'Albums',
-            count: 25,
-            total: 100,
-            percentage: '25%',
-            key: uuid()
-        },
-    ]);
+    const [objectives, setObjectives] = useState([]);
 
     //Async storage functions
     const storeData = async (value) => {
@@ -194,19 +180,20 @@ export default function Counter() {
     //Render
     return(
         <View style={[styles.container, {backgroundColor: colors.background}]}>
+            <StatusBar backgroundColor={colors.card} />
             <ScrollView>
             {objectives.map(objective => {
                 return(
-                    <View style={styles.objectiveItem} key={objective.key}>
-                        <Text style={styles.textSm}>{objective.title} - {objective.count}/{objective.total}</Text>
+                    <View style={[styles.objectiveItem, {backgroundColor: colors.notification, borderColor: colors.border, shadowColor: colors.border}]} key={objective.key}>
+                        <Text style={[styles.textSm, {color: colors.text}]}>{objective.title} - {objective.count}/{objective.total}</Text>
                         <Gap pixels='10'/>
                         <View style={styles.row}>
                             <TouchableOpacity onPress={() => minusHandler(objective.key)}>
-                              <AntDesign name="minuscircleo" size={24} color="black" />
+                              <AntDesign name="minuscircleo" size={24} color={colors.text} />
                             </TouchableOpacity>
                             <GapRow pixels='10'/>
                             <TouchableOpacity onPress={() => plusHandler(objective.key)}>
-                              <AntDesign name="pluscircleo" size={24} color="black"  />
+                              <AntDesign name="pluscircleo" size={24} color={colors.text}  />
                             </TouchableOpacity>
                         </View>
                         <Gap pixels='10'/>
@@ -220,7 +207,7 @@ export default function Counter() {
                 );
             })}
             </ScrollView>
-            
+
             <Gap pixels='20'/>
 
             <CustomButton 
@@ -253,12 +240,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
         borderWidth: 0.3,
-        borderColor: '#CDD4DA',
-        backgroundColor: '#DEE7FF',
         borderRadius: 20,
         marginBottom: 20,
         elevation: 10,
-        shadowColor: '#CDD4DA',
       },
       row: {
         display: 'flex',
