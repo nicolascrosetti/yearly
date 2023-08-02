@@ -200,7 +200,7 @@ export default function Counter() {
                         <ProgressBar  percentage={objective.percentage}/>
                         <View style={styles.deleteButton}>
                           <TouchableOpacity onPress={() => {confirmDeletionHadler(objective.key)}}>
-                            <AntDesign name='delete' size={18} color="white" />
+                            <AntDesign name='delete' size={16} color="white" />
                           </TouchableOpacity>
                         </View>
                     </View>
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
       objectiveItem: {
         display: 'flex',
         alignItems: 'center',
-        padding: 20,
+        padding: 25,
         borderWidth: 0.3,
         borderRadius: 20,
         marginBottom: 20,
@@ -255,10 +255,12 @@ const styles = StyleSheet.create({
       deleteButton: {
         backgroundColor: '#DA416A',
         position: 'absolute',
-        top: 10,
-        right: 10,
-        padding: 3,
+        top: 0,
+        right: 0,
+        padding: 5,
         borderRadius: 5,
+        borderTopRightRadius:20,
+        borderTopLeftRadius:0,
         elevation: 2,
         shadowColor: 'black'
       }
