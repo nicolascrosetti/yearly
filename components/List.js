@@ -38,14 +38,14 @@ export default function List({isListOpened, setIsListOpened, listTitle, listList
         <Modal transparent={true} visible={isListOpened}>
             <View style={[styles.modalContainer, {backgroundColor: colors.background}]}>
                 <Text style={[styles.textMd, {color: colors.text}]}>{listTitle}</Text>
-                <Gap pixels='50' />
+                <Gap pixels='24' />
                     <View style={[styles.list, {backgroundColor: colors.card, borderColor: colors. border}]}>
                             <ScrollView>
-                                <Text style={[styles.textSm, {color: colors.text}]}>{listList}</Text>
+                                <Text style={[styles.textXs, {color: colors.text}]}>{listList}</Text>
                             </ScrollView>
                     </View>
                 
-                <Gap pixels='50' />
+                <Gap pixels='25' />
                 <View style={styles.row}>
                     <CustomButton 
                         buttonColor='#6ADA41'
@@ -90,6 +90,10 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontFamily: 'Inter',
     },
+    textXs: {
+        fontSize: 18,
+        fontFamily: 'Inter',
+    },
     textMd: {
         fontSize: 25,
         fontFamily: 'Inter-Medium',        
@@ -103,10 +107,10 @@ const styles = StyleSheet.create({
         borderWidth: 0.3,
         borderColor: '#CDD4DA',
         borderRadius: 5,
-        padding: 20,
-        height: 400,
-        width: 250,
+        padding: 10,
+        height: 500,
+        width: '90%',
         elevation: 8,
-        shadowColor: '#CDD4DA'
+        shadowColor: '#CDD4DA',
     }
 });
