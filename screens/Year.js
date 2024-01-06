@@ -75,7 +75,7 @@ export default function Year() {
     setToday(new Date());
 
     //Set year progress percentage
-    const percetange = ((dayNumber * 100) / 365)+ '%';
+    const percetange = ((dayNumber * 100) / 366)+ '%';
     setYearPercentage(percetange);
 
     setTimeout(() => {
@@ -162,17 +162,17 @@ export default function Year() {
 
   const dayNumber = differenceInDays(
     today,
-    new Date(2023, 0, 0)
+    new Date(2024, 0, 0)
   )
 
   const weekNumber = differenceInCalendarWeeks(
     today,
-    new Date(2023, 0, 0)
-  )
+    new Date(2024, 0, 0)
+  ) + 1
 
   const monthNumber = differenceInCalendarMonths(
     today,
-    new Date(2023, 0, 0)
+    new Date(2024, 0, 0)
   )
   const pixelsGap = '30';
 
