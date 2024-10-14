@@ -15,9 +15,9 @@ const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#7891DA',
-    card: '#FCFEFF',
-    text: 'black',
+    primary: '#4240C7',
+    card: '#F7F8FF',
+    text: '#111124',
     background: '#F0F8FF',
     notification: '#DEE7FF',
   },
@@ -27,7 +27,7 @@ const MyDarkTheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
-    primary: '#7891DA',
+    primary: '#4240C7',
     card: '#444648',
     text: 'white',
     background: '#222324',
